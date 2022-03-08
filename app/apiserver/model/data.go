@@ -365,84 +365,172 @@ func (d *DataForms) ValidateDataForms() error {
 //gaz crm
 //data struct for call gaz crm api method
 type DataGazCrm struct {
-	Data []*DataGazCrmReq `json:"Data"`
+	Data DataGazCrmReq `json:"Data"`
 }
 
 //data struct for call gaz crm api method
 type DataGazCrmReq struct {
 	//gaz crm fields
-	TimeRequest       string `json:"event_datetime,omitempty"` //general field with booking
-	RequestId         string `json:"request_id,omitempty"`     //general field with booking
-	SubdivisionsId    string `json:"subdivisions_id,omitempty"`
-	SubdivisionsName  string `json:"subdivisions_name,omitempty"`
-	FormName          string `json:"form_name,omitempty"`
-	FormId            string `json:"id_form,omitempty"`
-	HostName          string `json:"host_name,omitempty"`
-	Division          string `json:"division,omitempty"`
-	Area              string `json:"area,omitempty"`
-	BrandName         string `json:"brand_name,omitempty"`
-	CarModel          string `json:"car_model,omitempty"`
-	ClientID          string `json:"ClientID,omitempty"` //general field with booking
-	MetricsType       string `json:"metrics_type,omitempty"`
-	СlientIP          string `json:"client_IP,omitempty"`
-	TypeClient        string `json:"client_type,omitempty"`         //general field with booking
-	CompanyName       string `json:"client_company_name,omitempty"` //general field with booking
-	СlientName        string `json:"client_name,omitempty"`         //general field with booking
-	ClientEmail       string `json:"client_email,omitempty"`        //general field with booking
-	ClientPhoneNumber string `json:"client_phone_number,omitempty"` //general field with booking
-	Commentary        string `json:"commentary,omitempty"`          //general field with booking
-	AgreementMailing  string `json:"agreement_mailing,omitempty"`   //general field with booking
+	TimeRequest struct {
+		TimeRequest string `json:"event_datetime"` //general field with booking
+	}
+	RequestId struct {
+		RequestId string `json:"request_id"` //general field with booking
+	}
+	SubdivisionsId struct {
+		SubdivisionsId string `json:"subdivisions_id"`
+	}
+	SubdivisionsName struct {
+		SubdivisionsName string `json:"subdivisions_name"`
+	}
+	FormName struct {
+		FormName string `json:"form_name"`
+	}
+	FormId struct {
+		FormId string `json:"id_form"`
+	}
+	HostName struct {
+		HostName string `json:"host_name"`
+	}
+	Division struct {
+		Division string `json:"division"`
+	}
+	Area struct {
+		Area string `json:"area"`
+	}
+	BrandName struct {
+		BrandName string `json:"brand_name"`
+	}
+	CarModel struct {
+		CarModel string `json:"car_model"`
+	}
+	ClientID struct {
+		ClientID string `json:"ClientID"`
+	}
+	MetricsType struct {
+		MetricsType string `json:"metrics_type"`
+	}
+	СlientIP struct {
+		СlientIP string `json:"client_IP"`
+	}
+	TypeClient struct {
+		TypeClient string `json:"client_type"` //general field with booking
+	}
+	CompanyName struct {
+		CompanyName string `json:"client_company_name"` //general field with booking
+	}
+	СlientName struct {
+		СlientName string `json:"client_name"` //general field with booking
+	}
+	ClientEmail struct {
+		ClientEmail string `json:"client_email"` //general field with booking
+	}
+	ClientPhoneNumber struct {
+		ClientPhoneNumber string `json:"client_phone_number"` //general field with booking
+	}
+	Commentary struct {
+		Commentary string `json:"commentary"` //general field with booking
+	}
+	AgreementMailing struct {
+		AgreementMailing string `json:"agreement_mailing"` //general field with booking
+	}
 }
 
 //data struct for call gaz crm api method
 //lead_get gaz crm
 type DataLeadGet struct {
-	Data []DataLeadGet_Gazcrm `json:"Data"`
+	Data DataLeadGet_Gazcrm `json:"Data"`
 }
 
 //lead_get gaz crm
 type DataLeadGet_Gazcrm struct {
-	TimeRequest      string `json:"event_datetime,omitempty"`
-	EventName        string `json:"event_name,omitempty"`
-	RequestId        string `json:"request_id,omitempty"`
-	SubdivisionsId   string `json:"subdivisions_id,omitempty"`
-	SubdivisionsName string `json:"subdivisions_name,omitempty"`
-	FormName         string `json:"form_name,omitempty"`
-	HostName         string `json:"host_name,omitempty"`
-	Division         string `json:"division,omitempty"`
-	Area             string `json:"area,omitempty"`
-	BrandName        string `json:"brand_name,omitempty"`
-	ClientID         string `json:"ClientID,omitempty"`
-	MetricsType      string `json:"metrics_type,omitempty"`
+	TimeRequest struct {
+		TimeRequest string `json:"event_datetime"`
+	}
+	EventName struct {
+		EventName string `json:"event_name"`
+	}
+	RequestId struct {
+		RequestId string `json:"request_id,omitempty"`
+	}
+	SubdivisionsId struct {
+		SubdivisionsId string `json:"subdivisions_id,omitempty"`
+	}
+	SubdivisionsName struct {
+		SubdivisionsName string `json:"subdivisions_name"`
+	}
+	FormName struct {
+		FormName string `json:"form_name"`
+	}
+	HostName struct {
+		HostName string `json:"host_name"`
+	}
+	Division struct {
+		Division string `json:"division"`
+	}
+	Area struct {
+		Area string `json:"area"`
+	}
+	BrandName struct {
+		BrandName string `json:"brand_name"`
+	}
+	ClientID struct {
+		ClientID string `json:"ClientID"`
+	}
+	MetricsType struct {
+		MetricsType string `json:"metrics_type"`
+	}
 }
 
 //work_list gaz crm
 type DataWorkList struct {
-	Data []DataWorkList_Gazcrm `json:"Data"`
+	Data DataWorkList_Gazcrm `json:"Data"`
 }
 
 //work_list gaz crm
 type DataWorkList_Gazcrm struct {
-	TimeRequest      string `json:"event_datetime,omitempty"`
-	EventName        string `json:"event_name,omitempty"`
-	GazcrmClientId   string `json:"gazcrm_client_id,omitempty"`
-	GazCrmWorkListId string `json:"gazcrm_worklist_id,omitempty"`
+	TimeRequest struct {
+		TimeRequest string `json:"event_datetime"`
+	}
+	EventName struct {
+		EventName string `json:"event_name"`
+	}
+	GazcrmClientId struct {
+		GazcrmClientId string `json:"gazcrm_client_id"`
+	}
+	GazCrmWorkListId struct {
+		GazCrmWorkListId string `json:"gazcrm_worklist_id"`
+	}
 }
 
 //status gaz crm
 type DataStatuses struct {
-	Data []DataStatuses_Gazcrm `json:"Data"`
+	Data DataStatuses_Gazcrm `json:"Data"`
 }
 
 //status gaz crm
 type DataStatuses_Gazcrm struct {
-	TimeRequest      string `json:"event_datetime,omitempty"`
-	EventName        string `json:"event_name,omitempty"`
-	RequestId        string `json:"request_id,omitempty"`
-	GazcrmClientId   string `json:"gazcrm_client_id,omitempty"`
-	GazCrmWorkListId string `json:"gazcrm_worklist_id,omitempty"`
-	ClientID         string `json:"ClientID,omitempty"`
-	MetricsType      string `json:"metrics_type,omitempty"`
+	TimeRequest struct {
+		TimeRequest string `json:"event_datetime"`
+	}
+	EventName struct {
+		EventName string `json:"event_name"`
+	}
+	RequestId struct {
+		RequestId string `json:"request_id"`
+	}
+	GazcrmClientId struct {
+		GazcrmClientId string `json:"gazcrm_client_id"`
+	}
+	GazCrmWorkListId struct {
+		GazCrmWorkListId string `json:"gazcrm_worklist_id"`
+	}
+	ClientID struct {
+		ClientID string `json:"ClientID"`
+	}
+	MetricsType struct {
+		MetricsType string `json:"metrics_type"`
+	}
 }
 
 //resp struct api gaz crm

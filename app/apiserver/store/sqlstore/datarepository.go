@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/webdevolegkuprianov/server_http_rest/app/apiserver/model"
@@ -65,6 +64,319 @@ func (r *DataRepository) QueryInsertMssql(data model.DataBooking) (string, error
 	}
 
 	return mssql_respond, nil
+}
+
+//request GAZ CRM booking
+func (r *DataRepository) RequestGazCrmApiBooking(data model.DataBooking, config *model.Service) (*model.ResponseGazCrm, error) {
+
+	var response *model.ResponseGazCrm
+
+	b := &model.DataGazCrm{
+		Data: model.DataGazCrmReq{
+			TimeRequest: struct {
+				TimeRequest string "json:\"event_datetime\""
+			}{
+				TimeRequest: data.TimeRequest,
+			},
+			RequestId: struct {
+				RequestId string "json:\"request_id\""
+			}{
+				RequestId: data.RequestId,
+			},
+			SubdivisionsId: struct {
+				SubdivisionsId string "json:\"subdivisions_id\""
+			}{
+				SubdivisionsId: data.SubdivisionsId,
+			},
+			SubdivisionsName: struct {
+				SubdivisionsName string "json:\"subdivisions_name\""
+			}{
+				SubdivisionsName: data.SubdivisionsName,
+			},
+			FormName: struct {
+				FormName string "json:\"form_name\""
+			}{
+				FormName: data.FormName,
+			},
+			FormId: struct {
+				FormId string "json:\"id_form\""
+			}{
+				FormId: data.FormId,
+			},
+			HostName: struct {
+				HostName string "json:\"host_name\""
+			}{
+				HostName: data.HostName,
+			},
+			Division: struct {
+				Division string "json:\"division\""
+			}{
+				Division: data.Division,
+			},
+			Area: struct {
+				Area string "json:\"area\""
+			}{
+				Area: data.Area,
+			},
+			BrandName: struct {
+				BrandName string "json:\"brand_name\""
+			}{
+				BrandName: data.BrandName,
+			},
+			CarModel: struct {
+				CarModel string "json:\"car_model\""
+			}{
+				CarModel: data.CarModel,
+			},
+			ClientID: struct {
+				ClientID string "json:\"ClientID\""
+			}{
+				ClientID: data.Clientid,
+			},
+			MetricsType: struct {
+				MetricsType string "json:\"metrics_type\""
+			}{
+				MetricsType: data.MetricsType,
+			},
+			СlientIP: struct {
+				СlientIP string "json:\"client_IP\""
+			}{
+				СlientIP: data.СlientIP,
+			},
+			TypeClient: struct {
+				TypeClient string "json:\"client_type\""
+			}{
+				TypeClient: data.TypeClient,
+			},
+			CompanyName: struct {
+				CompanyName string "json:\"client_company_name\""
+			}{
+				CompanyName: data.CompanyName,
+			},
+			СlientName: struct {
+				СlientName string "json:\"client_name\""
+			}{
+				СlientName: data.Name,
+			},
+			ClientEmail: struct {
+				ClientEmail string "json:\"client_email\""
+			}{
+				ClientEmail: data.Email,
+			},
+			ClientPhoneNumber: struct {
+				ClientPhoneNumber string "json:\"client_phone_number\""
+			}{
+				ClientPhoneNumber: data.PhoneNumber,
+			},
+			Commentary: struct {
+				Commentary string "json:\"commentary\""
+			}{
+				Commentary: data.Comment,
+			},
+			AgreementMailing: struct {
+				AgreementMailing string "json:\"agreement_mailing\""
+			}{
+				AgreementMailing: data.Consentmailing,
+			},
+		},
+	}
+
+	//d_spaces, err := json.MarshalIndent(dataset, "", "    ")
+	//if err != nil {
+	//return "", err
+	//}
+
+	bodyBytesReq, err := json.Marshal(b)
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+		return nil, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(time.Second*5))
+	defer cancel()
+
+	req, err := http.NewRequest(http.MethodPost, config.Spec.Client.UrlGazCrmTest, bytes.NewBuffer(bodyBytesReq))
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+		return nil, err
+	}
+
+	req = req.WithContext(ctx)
+	c := &http.Client{}
+
+	resp, err := c.Do(req)
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytesResp, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+		return nil, err
+	}
+
+	if err := json.Unmarshal(bodyBytesResp, &response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+
+}
+
+//request GAZ CRM forms
+func (r *DataRepository) RequestGazCrmApiForms(data model.DataForms, config *model.Service) (*model.ResponseGazCrm, error) {
+
+	var response *model.ResponseGazCrm
+
+	b := &model.DataGazCrm{
+		Data: model.DataGazCrmReq{
+			TimeRequest: struct {
+				TimeRequest string "json:\"event_datetime\""
+			}{
+				TimeRequest: data.TimeRequest,
+			},
+			RequestId: struct {
+				RequestId string "json:\"request_id\""
+			}{
+				RequestId: data.RequestId,
+			},
+			SubdivisionsId: struct {
+				SubdivisionsId string "json:\"subdivisions_id\""
+			}{
+				SubdivisionsId: data.SubdivisionsId,
+			},
+			SubdivisionsName: struct {
+				SubdivisionsName string "json:\"subdivisions_name\""
+			}{
+				SubdivisionsName: data.SubdivisionsName,
+			},
+			FormName: struct {
+				FormName string "json:\"form_name\""
+			}{
+				FormName: data.FormName,
+			},
+			FormId: struct {
+				FormId string "json:\"id_form\""
+			}{
+				FormId: data.FormId,
+			},
+			HostName: struct {
+				HostName string "json:\"host_name\""
+			}{
+				HostName: data.HostName,
+			},
+			Division: struct {
+				Division string "json:\"division\""
+			}{
+				Division: data.Division,
+			},
+			Area: struct {
+				Area string "json:\"area\""
+			}{
+				Area: data.Area,
+			},
+			BrandName: struct {
+				BrandName string "json:\"brand_name\""
+			}{
+				BrandName: data.BrandName,
+			},
+			CarModel: struct {
+				CarModel string "json:\"car_model\""
+			}{
+				CarModel: data.CarModel,
+			},
+			ClientID: struct {
+				ClientID string "json:\"ClientID\""
+			}{
+				ClientID: data.Clientid,
+			},
+			MetricsType: struct {
+				MetricsType string "json:\"metrics_type\""
+			}{
+				MetricsType: data.MetricsType,
+			},
+			СlientIP: struct {
+				СlientIP string "json:\"client_IP\""
+			}{
+				СlientIP: data.СlientIP,
+			},
+			TypeClient: struct {
+				TypeClient string "json:\"client_type\""
+			}{
+				TypeClient: data.TypeClient,
+			},
+			CompanyName: struct {
+				CompanyName string "json:\"client_company_name\""
+			}{
+				CompanyName: data.CompanyName,
+			},
+			СlientName: struct {
+				СlientName string "json:\"client_name\""
+			}{
+				СlientName: data.Name,
+			},
+			ClientEmail: struct {
+				ClientEmail string "json:\"client_email\""
+			}{
+				ClientEmail: data.Email,
+			},
+			ClientPhoneNumber: struct {
+				ClientPhoneNumber string "json:\"client_phone_number\""
+			}{
+				ClientPhoneNumber: data.PhoneNumber,
+			},
+			Commentary: struct {
+				Commentary string "json:\"commentary\""
+			}{
+				Commentary: data.Comment,
+			},
+			AgreementMailing: struct {
+				AgreementMailing string "json:\"agreement_mailing\""
+			}{
+				AgreementMailing: data.Consentmailing,
+			},
+		},
+	}
+
+	bodyBytesReq, err := json.Marshal(b)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(time.Second*5))
+	defer cancel()
+
+	req, err := http.NewRequest(http.MethodPost, config.Spec.Client.UrlGazCrmTest, bytes.NewBuffer(bodyBytesReq))
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+		return nil, err
+	}
+
+	req = req.WithContext(ctx)
+	c := &http.Client{}
+
+	resp, err := c.Do(req)
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytesResp, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		logger.ErrorLogger.Println(err)
+		return nil, err
+	}
+
+	if err := json.Unmarshal(bodyBytesResp, &response); err != nil {
+		logger.ErrorLogger.Println(err)
+		return nil, err
+	}
+
+	return response, nil
+
 }
 
 //insert booking in postgres
@@ -214,8 +526,6 @@ func (r *DataRepository) QueryInsertFormsPostgres(data model.DataForms) error {
 //insert lead_get in postgres
 func (r *DataRepository) QueryInsertLeadGetPostgres(data model.DataLeadGet) error {
 
-	valSlice := reflect.ValueOf(data).FieldByName("Data").Interface().([]model.DataLeadGet_Gazcrm)
-
 	query := `
 	insert into gazcrm_lead_get
 	values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
@@ -230,18 +540,18 @@ func (r *DataRepository) QueryInsertLeadGetPostgres(data model.DataLeadGet) erro
 	}
 
 	_, err = tx.Exec(ctx, query,
-		valSlice[0].TimeRequest,
-		valSlice[1].EventName,
-		valSlice[2].RequestId,
-		valSlice[3].SubdivisionsId,
-		valSlice[4].SubdivisionsName,
-		valSlice[5].FormName,
-		valSlice[6].HostName,
-		valSlice[7].Division,
-		valSlice[8].Area,
-		valSlice[9].BrandName,
-		valSlice[10].ClientID,
-		valSlice[11].MetricsType,
+		data.Data.TimeRequest,
+		data.Data.EventName,
+		data.Data.RequestId,
+		data.Data.SubdivisionsId,
+		data.Data.SubdivisionsName,
+		data.Data.FormName,
+		data.Data.HostName,
+		data.Data.Division,
+		data.Data.Area,
+		data.Data.BrandName,
+		data.Data.ClientID,
+		data.Data.MetricsType,
 	)
 	if err != nil {
 		logger.ErrorLogger.Println(err)
@@ -260,8 +570,6 @@ func (r *DataRepository) QueryInsertLeadGetPostgres(data model.DataLeadGet) erro
 //insert work lists in postgres
 func (r *DataRepository) QueryInsertWorkListsPostgres(data model.DataWorkList) error {
 
-	valSlice := reflect.ValueOf(data).FieldByName("Data").Interface().([]model.DataWorkList_Gazcrm)
-
 	query := `
 	insert into gazcrm_work_list
 	values($1, $2, $3, $4)`
@@ -276,10 +584,10 @@ func (r *DataRepository) QueryInsertWorkListsPostgres(data model.DataWorkList) e
 	}
 
 	_, err = tx.Exec(ctx, query,
-		valSlice[0].TimeRequest,
-		valSlice[1].EventName,
-		valSlice[2].GazcrmClientId,
-		valSlice[3].GazCrmWorkListId,
+		data.Data.TimeRequest,
+		data.Data.EventName,
+		data.Data.GazcrmClientId,
+		data.Data.GazCrmWorkListId,
 	)
 	if err != nil {
 		logger.ErrorLogger.Println(err)
@@ -298,8 +606,6 @@ func (r *DataRepository) QueryInsertWorkListsPostgres(data model.DataWorkList) e
 //insert work lists in postgres
 func (r *DataRepository) QueryInsertStatusesPostgres(data model.DataStatuses) error {
 
-	valSlice := reflect.ValueOf(data).FieldByName("Data").Interface().([]model.DataStatuses_Gazcrm)
-
 	query := `
 	insert into gazcrm_statuses
 	values($1, $2, $3, $4, $5, $6, $7)`
@@ -314,13 +620,13 @@ func (r *DataRepository) QueryInsertStatusesPostgres(data model.DataStatuses) er
 	}
 
 	_, err = tx.Exec(ctx, query,
-		valSlice[0].TimeRequest,
-		valSlice[1].EventName,
-		valSlice[2].RequestId,
-		valSlice[3].GazcrmClientId,
-		valSlice[4].GazCrmWorkListId,
-		valSlice[5].ClientID,
-		valSlice[6].MetricsType,
+		data.Data.TimeRequest,
+		data.Data.EventName,
+		data.Data.RequestId,
+		data.Data.GazcrmClientId,
+		data.Data.GazCrmWorkListId,
+		data.Data.ClientID,
+		data.Data.MetricsType,
 	)
 	if err != nil {
 		logger.ErrorLogger.Println(err)
@@ -347,11 +653,11 @@ func (r *DataRepository) QueryStocksMssql() ([]model.DataStocks, error) {
 
 	defer rows.Close()
 
-	results := []model.DataStocks{} // creating empty slice
+	results := []model.DataStocks{}
 
 	for rows.Next() {
 
-		data := &model.DataStocks{} // creating new struct for every row
+		data := &model.DataStocks{}
 
 		err := rows.Scan(
 			&data.VIN,
@@ -750,214 +1056,5 @@ func (r *DataRepository) CallMSMailing(data model.DataBooking, config *model.Ser
 	}
 
 	return string(bodyBytesResp), nil
-
-}
-
-//request GAZ CRM booking
-func (r *DataRepository) RequestGazCrmApiBooking(data model.DataBooking, config *model.Service) (*model.ResponseGazCrm, error) {
-
-	var dataset model.DataGazCrm
-	var response *model.ResponseGazCrm
-
-	bodyJson0 := &model.DataGazCrmReq{
-		TimeRequest: data.TimeRequest,
-	}
-	bodyJson1 := &model.DataGazCrmReq{
-		RequestId: data.RequestId,
-	}
-	bodyJson2 := &model.DataGazCrmReq{
-		SubdivisionsId: data.SubdivisionsId,
-	}
-	bodyJson3 := &model.DataGazCrmReq{
-		SubdivisionsName: data.SubdivisionsName,
-	}
-	bodyJson4 := &model.DataGazCrmReq{
-		FormName: data.FormName,
-	}
-	bodyJson5 := &model.DataGazCrmReq{
-		FormId: data.FormId,
-	}
-	bodyJson6 := &model.DataGazCrmReq{
-		HostName: data.HostName,
-	}
-	bodyJson7 := &model.DataGazCrmReq{
-		Division: data.Division,
-	}
-	bodyJson8 := &model.DataGazCrmReq{
-		Area: data.Area,
-	}
-	bodyJson9 := &model.DataGazCrmReq{
-		BrandName: data.BrandName,
-	}
-	bodyJson10 := &model.DataGazCrmReq{
-		CarModel: data.CarModel,
-	}
-	bodyJson11 := &model.DataGazCrmReq{
-		ClientID: data.Clientid,
-	}
-	bodyJson12 := &model.DataGazCrmReq{
-		MetricsType: data.MetricsType,
-	}
-	bodyJson13 := &model.DataGazCrmReq{
-		СlientIP: data.СlientIP,
-	}
-	bodyJson14 := &model.DataGazCrmReq{
-		TypeClient: data.TypeClient,
-	}
-	bodyJson15 := &model.DataGazCrmReq{
-		CompanyName: data.CompanyName,
-	}
-	bodyJson16 := &model.DataGazCrmReq{
-		СlientName: data.Name,
-	}
-	bodyJson17 := &model.DataGazCrmReq{
-		ClientEmail: data.Email,
-	}
-	bodyJson18 := &model.DataGazCrmReq{
-		ClientPhoneNumber: data.PhoneNumber,
-	}
-	bodyJson19 := &model.DataGazCrmReq{
-		Commentary: data.Comment,
-	}
-	bodyJson20 := &model.DataGazCrmReq{
-		AgreementMailing: data.Consentmailing,
-	}
-
-	dataset.Data = append(dataset.Data, bodyJson0, bodyJson1, bodyJson2, bodyJson3, bodyJson4, bodyJson5, bodyJson6,
-		bodyJson7, bodyJson8, bodyJson9, bodyJson10, bodyJson11, bodyJson12, bodyJson13, bodyJson14,
-		bodyJson15, bodyJson16, bodyJson17, bodyJson18, bodyJson19, bodyJson20)
-
-	//d_spaces, err := json.MarshalIndent(dataset, "", "    ")
-	//if err != nil {
-	//return "", err
-	//}
-
-	bodyBytesReq, err := json.Marshal(dataset)
-	if err != nil {
-		logger.ErrorLogger.Println(err)
-		return nil, err
-	}
-
-	resp, err := http.Post(config.Spec.Client.UrlGazCrmTest, "application/json", bytes.NewBuffer(bodyBytesReq))
-	if err != nil {
-		logger.ErrorLogger.Println(err)
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-
-	bodyBytesResp, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		logger.ErrorLogger.Println(err)
-		return nil, err
-	}
-
-	if err := json.Unmarshal(bodyBytesResp, &response); err != nil {
-		return nil, err
-	}
-
-	return response, nil
-
-}
-
-//request GAZ CRM forms
-func (r *DataRepository) RequestGazCrmApiForms(data model.DataForms, config *model.Service) (*model.ResponseGazCrm, error) {
-
-	var dataset model.DataGazCrm
-	var response *model.ResponseGazCrm
-
-	bodyJson0 := &model.DataGazCrmReq{
-		TimeRequest: data.TimeRequest,
-	}
-	bodyJson1 := &model.DataGazCrmReq{
-		RequestId: data.RequestId,
-	}
-	bodyJson2 := &model.DataGazCrmReq{
-		SubdivisionsId: data.SubdivisionsId,
-	}
-	bodyJson3 := &model.DataGazCrmReq{
-		SubdivisionsName: data.SubdivisionsName,
-	}
-	bodyJson4 := &model.DataGazCrmReq{
-		FormName: data.FormName,
-	}
-	bodyJson5 := &model.DataGazCrmReq{
-		FormId: data.FormId,
-	}
-	bodyJson6 := &model.DataGazCrmReq{
-		HostName: data.HostName,
-	}
-	bodyJson7 := &model.DataGazCrmReq{
-		Division: data.Division,
-	}
-	bodyJson8 := &model.DataGazCrmReq{
-		Area: data.Area,
-	}
-	bodyJson9 := &model.DataGazCrmReq{
-		BrandName: data.BrandName,
-	}
-	bodyJson10 := &model.DataGazCrmReq{
-		CarModel: data.CarModel,
-	}
-	bodyJson11 := &model.DataGazCrmReq{
-		ClientID: data.Clientid,
-	}
-	bodyJson12 := &model.DataGazCrmReq{
-		MetricsType: data.MetricsType,
-	}
-	bodyJson13 := &model.DataGazCrmReq{
-		СlientIP: data.СlientIP,
-	}
-	bodyJson14 := &model.DataGazCrmReq{
-		TypeClient: data.TypeClient,
-	}
-	bodyJson15 := &model.DataGazCrmReq{
-		CompanyName: data.CompanyName,
-	}
-	bodyJson16 := &model.DataGazCrmReq{
-		СlientName: data.Name,
-	}
-	bodyJson17 := &model.DataGazCrmReq{
-		ClientEmail: data.Email,
-	}
-	bodyJson18 := &model.DataGazCrmReq{
-		ClientPhoneNumber: data.PhoneNumber,
-	}
-	bodyJson19 := &model.DataGazCrmReq{
-		Commentary: data.Comment,
-	}
-	bodyJson20 := &model.DataGazCrmReq{
-		AgreementMailing: data.Consentmailing,
-	}
-
-	dataset.Data = append(dataset.Data, bodyJson0, bodyJson1, bodyJson2, bodyJson3, bodyJson4, bodyJson5, bodyJson6,
-		bodyJson7, bodyJson8, bodyJson9, bodyJson10, bodyJson11, bodyJson12, bodyJson13, bodyJson14,
-		bodyJson15, bodyJson16, bodyJson17, bodyJson18, bodyJson19, bodyJson20)
-
-	bodyBytesReq, err := json.Marshal(dataset)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := http.Post(config.Spec.Client.UrlGazCrmTest, "application/json", bytes.NewBuffer(bodyBytesReq))
-	if err != nil {
-		logger.ErrorLogger.Println(err)
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-
-	bodyBytesResp, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		logger.ErrorLogger.Println(err)
-		return nil, err
-	}
-
-	if err := json.Unmarshal(bodyBytesResp, &response); err != nil {
-		logger.ErrorLogger.Println(err)
-		return nil, err
-	}
-
-	return response, nil
 
 }
